@@ -1,7 +1,6 @@
 package peak
 
 import (
-	"log"
 	"os"
 	"runtime"
 	"sync"
@@ -61,12 +60,12 @@ func updateFileDescriptors() {
 		return
 	}
 
-	entries, err := os.ReadDir(fdPath)
-	log.Printf("fd count:%d error:%v", entries, err)
-	for _, e := range entries {
-		log.Printf("[DEBUG] name:%s type:%s", e.Name(), e.Type())
-	}
-	// files, _ := ioutil.ReadDir(fmt.Sprintf("/proc/%d/fd", pid))
+	entries, _ := os.ReadDir(fdPath)
+	// log.Printf("fd count:%d error:%v", entries, err)
+	// for _, e := range entries {
+	// 	log.Printf("[DEBUG] name:%s type:%s", e.Name(), e.Type())
+	// }
+	// // files, _ := ioutil.ReadDir(fmt.Sprintf("/proc/%d/fd", pid))
 
 	m.Lock()
 	defer m.Unlock()
