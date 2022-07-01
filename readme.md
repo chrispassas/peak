@@ -1,4 +1,4 @@
-# Peak track peak usage of memory goroutines and file descriptors that have ocurred since program startup
+# Peak tracks peak usage of memory goroutines and file descriptors that have ocurred since program startup
 
 ## Why use this?
 If you need to know how many CPU's , File Descriptors and Memory your program uses at its peak. Maybe for sizing a VM or container resources.
