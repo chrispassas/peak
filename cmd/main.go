@@ -1,28 +1,40 @@
 package main
 
 import (
-	"log"
-	"os"
+	"fmt"
+	"sync"
 	"time"
 
 	"github.com/chrispassas/peak"
 )
 
 func main() {
-	log.Printf("start")
-	log.Printf("pid:%d", os.Getpid())
+	fmt.Printf("start\n")
+	// Print peak values
+	fmt.Printf("peak mem:%d\n", peak.PeakMemory())
+	fmt.Printf("peak goroutines:%d\n", peak.PeakGoRoutines())
+	fmt.Printf("peak fd:%d\n", peak.PeakFileDescriptors())
 
-	// os.Stderr.Close()
-	os.Stdout.Close()
-	// os.Stdin.Close()
+	time.Sleep(time.Second * 2)
 
+	// Make some goroutines and use some memeory
+	var wg sync.WaitGroup
+	var data []string
 	for x := 0; x < 10; x++ {
-		log.Printf("x:%d", x)
-		time.Sleep(time.Second * 2)
-		log.Printf("peak mem:%d", peak.PeakMemory())
-		log.Printf("peak goroutines:%d", peak.PeakGoRoutines())
-		log.Printf("peak fd:%d", peak.PeakFileHandles())
+		wg.Add(1)
+		go func(x int, wg *sync.WaitGroup) {
+			defer wg.Done()
+			time.Sleep(time.Second * 5)
+			fmt.Printf("x:%d\n", x)
+		}(x, &wg)
+		for i := 0; i < 1000; i++ {
+			data = append(data, fmt.Sprintf("%d", i))
+		}
 	}
+	wg.Wait()
 
-	log.Printf("end")
+	fmt.Printf("peak mem:%d\n", peak.PeakMemory())
+	fmt.Printf("peak goroutines:%d\n", peak.PeakGoRoutines())
+	fmt.Printf("peak fd:%d\n", peak.PeakFileDescriptors())
+
 }

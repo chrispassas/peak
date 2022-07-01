@@ -61,35 +61,35 @@ func updateFileDescriptors() {
 	}
 
 	entries, _ := os.ReadDir(fdPath)
-	// log.Printf("fd count:%d error:%v", entries, err)
-	// for _, e := range entries {
-	// 	log.Printf("[DEBUG] name:%s type:%s", e.Name(), e.Type())
-	// }
-	// // files, _ := ioutil.ReadDir(fmt.Sprintf("/proc/%d/fd", pid))
-
 	m.Lock()
 	defer m.Unlock()
-	peakFileDescriptors = uint64(len(entries))
+	if peakFileDescriptors < uint64(len(entries)) {
+		peakFileDescriptors = uint64(len(entries))
+	}
 }
 
+// PeakMemory return highest number of bytes in use
 func PeakMemory() uint64 {
 	m.RLock()
 	defer m.RUnlock()
 	return peakMemory
 }
 
+// PeakGoRoutines return highest number of observed goroutines
 func PeakGoRoutines() uint64 {
 	m.RLock()
 	defer m.RUnlock()
 	return peakGoRoutines
 }
 
-func PeakFileHandles() uint64 {
+// PeakFileDescriptors return highest number of observed file descriptors
+func PeakFileDescriptors() uint64 {
 	m.RLock()
 	defer m.RUnlock()
 	return peakFileDescriptors
 }
 
+// Reset set metrics back to 0
 func Reset() {
 	m.Lock()
 	defer m.Unlock()
@@ -98,6 +98,7 @@ func Reset() {
 	peakFileDescriptors = 0
 }
 
+// SetInterval override default sampling interval
 func SetInterval(dur time.Duration) {
 	if dur > 0 {
 		m2.Lock()
