@@ -12,6 +12,7 @@ func main() {
 	fmt.Printf("start\n")
 	// Print peak values
 	fmt.Printf("peak mem:%d\n", peak.PeakMemory())
+	fmt.Printf("peak mem string:%s\n", peak.PeakMemoryString())
 	fmt.Printf("peak goroutines:%d\n", peak.PeakGoRoutines())
 	fmt.Printf("peak fd:%d\n", peak.PeakFileDescriptors())
 
@@ -34,6 +35,7 @@ func main() {
 	wg.Wait()
 
 	fmt.Printf("peak mem:%d\n", peak.PeakMemory())
+	fmt.Printf("peak mem string:%s\n", peak.PeakMemoryString())
 	fmt.Printf("peak goroutines:%d\n", peak.PeakGoRoutines())
 	fmt.Printf("peak fd:%d\n", peak.PeakFileDescriptors())
 
