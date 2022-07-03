@@ -8,7 +8,7 @@ import (
 )
 
 var m2 sync.RWMutex
-var interval = time.Second * 2
+var interval = time.Second * 1
 
 var m sync.RWMutex
 var peakMemory uint64
