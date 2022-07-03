@@ -1,6 +1,7 @@
 package peak
 
 import (
+	"fmt"
 	"os"
 	"runtime"
 	"sync"
@@ -73,6 +74,18 @@ func PeakMemory() uint64 {
 	m.RLock()
 	defer m.RUnlock()
 	return peakMemory
+}
+
+// PeakMemoryString return highest memory usage in human readable string
+func PeakMemoryString() string {
+	m.RLock()
+	defer m.RUnlock()
+	mb := float64(peakMemory) / 1024 / 1024
+	if mb < 1024 {
+		return fmt.Sprintf("%.2f MB", mb)
+	} else {
+		return fmt.Sprintf("%.2f GB", mb/1024)
+	}
 }
 
 // PeakGoRoutines return highest number of observed goroutines
